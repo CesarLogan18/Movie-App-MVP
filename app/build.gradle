@@ -1,30 +1,93 @@
 apply plugin: 'com.android.application'
+apply from: "$rootProject.projectDir/app/config.gradle"
 
+def configuration = ext.configuration;
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    compileSdkVersion configuration.compileSdkVersion
+    buildToolsVersion configuration.buildToolsVersion
+
     defaultConfig {
-        applicationId "com.rappi.rappitest"
-        minSdkVersion 17
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        applicationId configuration.applicationId
+        minSdkVersion configuration.minimumSdkVersion
+        targetSdkVersion configuration.targetSdkVersion
+        versionCode buildVersionCode()
+        versionName buildVersionName()
     }
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"http://www.mocky.io/v2\"")
+            buildConfigField("String", "API_KEY", "\"ABCXYZ123TEST\"")
+        }
         release {
-            minifyEnabled false
+
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
+
+apply from: "$rootProject.projectDir/app/library.gradle"
+def version = ext.version;
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+    // android support libraries
+    compile "com.android.support:appcompat-v7:${version.supportLibraryVersion}"
+    compile "com.android.support:appcompat-v7:${version.supportLibraryVersion}"
+    compile "com.android.support:recyclerview-v7:${version.supportLibraryVersion}"
+    compile "com.android.support:cardview-v7:${version.supportLibraryVersion}"
+    compile "com.android.support:design:${version.supportLibraryVersion}"
+    compile "com.android.support:support-vector-drawable:${version.supportLibraryVersion}"
+    compile "com.android.support:animated-vector-drawable:${version.supportLibraryVersion}"
+    compile "com.android.support.constraint:constraint-layout:${version.contraintLayoutLibraryVersion}"
+
+    // fonts
+    compile "uk.co.chrisjenx:calligraphy:${version.caligraphyVersion}"
+
+    // network
+    compile "com.amitshekhar.android:rx2-android-networking:${version.rx2FastAndroidNetworking}"
+
+    //glide
+    compile "com.github.bumptech.glide:glide:${version.glideVersion}"
+
+    // parser
+    compile "com.google.code.gson:gson:${version.gsonVersion}"
+
+    // database
+    compile "org.greenrobot:greendao:${version.greenDaoVersion}"
+
+    // debug database
+    debugCompile "com.amitshekhar.android:debug-db:${version.debugDBVersion}"
+
+    //alerts
+    compile "cn.pedant.sweetalert:library:${version.dialogLibraryVersion}"
+
+    // // dependency injection
+    compile "com.google.dagger:dagger:${version.dagger2Version}"
+    annotationProcessor "com.google.dagger:dagger-compiler:${version.dagger2Version}"
+    provided 'javax.annotation:jsr250-api:1.0'
+    compile 'javax.inject:javax.inject:1'
+
+    // reactive
+    compile "io.reactivex.rxjava2:rxjava:${version.rxjava2Version}"
+    compile "io.reactivex.rxjava2:rxandroid:${version.rxandroidVersion}"
+
+    // code generator for view
+    compile "com.jakewharton:butterknife:${version.butterKnifeVersion}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${version.butterKnifeVersion}"
+
+    // dependencies for local unit tests
+    testCompile "junit:junit:${version.junitVersion}"
+    testCompile "org.mockito:mockito-core:${version.mockitoVersion}"
+    testAnnotationProcessor "com.google.dagger:dagger-compiler:${version.dagger2Version}"
+
+    // logger
+    compile "com.jakewharton.timber:timber:${version.timberVersion}"
+
+    //animations
+    compile "com.nineoldandroids:library:${version.animationLibrary1Version}"
+    compile "com.daimajia.easing:library:${version.animationLibrary2Version}"
+    compile "com.daimajia.androidanimations:library:${version.animationLibrary3Version}"
+
 }

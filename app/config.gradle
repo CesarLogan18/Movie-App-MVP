@@ -1,0 +1,25 @@
+ext.configuration = [
+        applicationId    : "com.beet.beet",
+        versionMajor     : 1,
+        versionMinor     : 0,
+        versionPatch     : 1,
+        versionClassifier: "",
+        minimumSdkVersion: 17,
+        compileSdkVersion: 26,
+        targetSdkVersion : 26,
+        buildToolsVersion: "26.0.1"
+]
+
+def configuration = ext.configuration;
+
+ext.buildVersionCode = {
+    return configuration.minimumSdkVersion * 10000000 + configuration.versionMajor * 10000 + configuration.versionMinor * 100 + configuration.versionPatch
+}
+
+ext.buildVersionName = {
+    String versionName = "Beet"
+    if (configuration.versionClassifier != null && !configuration.versionClassifier.isEmpty()) {
+        versionName = versionName + "-" + configuration.versionClassifier
+    }
+    return versionName;
+}

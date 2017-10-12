@@ -57,7 +57,6 @@ public class ApplicationModule {
         return BuildConfig.API_KEY;
     }
 
-
     @Provides
     @Singleton
     DataManager provideDataManager(AppDataManager appDataManager) {
@@ -69,7 +68,6 @@ public class ApplicationModule {
     DbHelper provideDbHelper(AppDbHelper appDbHelper) {
         return appDbHelper;
     }
-
 
     @Provides
     @Singleton

@@ -16,7 +16,7 @@ public class MovieListResponse {
     @SerializedName("total_pages")
     private int totalPages;
     @SerializedName("results")
-    private List<Movie> results;
+    private List<MovieResponse> results;
 
     public int getPage() {
         return page;
@@ -30,14 +30,14 @@ public class MovieListResponse {
         return totalPages;
     }
 
-    public List<Movie> getResults() {
+    public List<MovieResponse> getResults() {
         if (results == null) {
             results = new ArrayList<>();
         }
         return results;
     }
 
-    public static class Movie {
+    public static class MovieResponse {
         @SerializedName("vote_count")
         private int voteCount;
         @SerializedName("id")

@@ -21,8 +21,9 @@ public class AppApiHelper implements ApiHelper {
     }
     @Override
     public Observable<MovieListResponse> doMovieListApiCall(int page) {
-        return Rx2AndroidNetworking.post(ApiEndPoint.ENDPOINT_MOVIES)
-                .addPathParameter(ApiEndPoint.ENDPOINT_MOVIES_PARAM_PATH, String.valueOf(page)).addQueryParameter(ApiEndPoint.ENDPOINT_MOVIES_PARAM, BuildConfig.API_KEY)
+        return Rx2AndroidNetworking.get(ApiEndPoint.ENDPOINT_MOVIES)
+                .addQueryParameter(ApiEndPoint.ENDPOINT_MOVIES_PARAM_PAGE, String.valueOf(page))
+                .addQueryParameter(ApiEndPoint.ENDPOINT_MOVIES_PARAM_API, BuildConfig.API_KEY)
                 .build()
                 .getObjectObservable(MovieListResponse.class);
     }

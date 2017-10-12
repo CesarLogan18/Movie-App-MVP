@@ -7,4 +7,7 @@
     <string name="connection_error">Internet connection lost!</string>
     <string name="all_loading_msg">Loading...</string>
 
+    <!-- List Message -->
+    <string name="list_hint_search">Search an item</string>
+    <string name="list_msg_no_items">No items found</string>
 </resources>

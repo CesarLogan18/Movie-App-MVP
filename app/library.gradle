@@ -2,7 +2,7 @@ ext.version = [
         supportLibraryVersion        : "25.3.1",
         caligraphyVersion            : "2.2.0",
         rx2FastAndroidNetworking     : "1.0.0",
-        glideVersion                 : "3.7.0",
+        glideVersion                 : "4.0.0",
         gsonVersion                  : "2.8.0",
         greenDaoVersion              : "3.2.0",
         debugDBVersion               : "1.0.0",

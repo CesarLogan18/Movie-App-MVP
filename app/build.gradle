@@ -34,7 +34,6 @@ def version = ext.version;
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
     // android support libraries
     compile "com.android.support:appcompat-v7:${version.supportLibraryVersion}"
     compile "com.android.support:appcompat-v7:${version.supportLibraryVersion}"
@@ -53,6 +52,7 @@ dependencies {
 
     //glide
     compile "com.github.bumptech.glide:glide:${version.glideVersion}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${version.glideVersion}"
 
     // parser
     compile "com.google.code.gson:gson:${version.gsonVersion}"
@@ -69,8 +69,6 @@ dependencies {
     // // dependency injection
     compile "com.google.dagger:dagger:${version.dagger2Version}"
     annotationProcessor "com.google.dagger:dagger-compiler:${version.dagger2Version}"
-    provided 'javax.annotation:jsr250-api:1.0'
-    compile 'javax.inject:javax.inject:1'
 
     // reactive
     compile "io.reactivex.rxjava2:rxjava:${version.rxjava2Version}"
@@ -93,4 +91,8 @@ dependencies {
     compile "com.daimajia.easing:library:${version.animationLibrary2Version}"
     compile "com.daimajia.androidanimations:library:${version.animationLibrary3Version}"
 
+    compile 'javax.inject:javax.inject:1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
+    provided 'javax.annotation:jsr250-api:1.0'
 }

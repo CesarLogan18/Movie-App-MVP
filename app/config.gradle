@@ -1,5 +1,5 @@
 ext.configuration = [
-        applicationId    : "com.beet.beet",
+        applicationId    : "com.rappi.rappiTest",
         versionMajor     : 1,
         versionMinor     : 0,
         versionPatch     : 1,

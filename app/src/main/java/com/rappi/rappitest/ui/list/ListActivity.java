@@ -17,6 +17,7 @@ import com.rappi.rappitest.R;
 import com.rappi.rappitest.data.db.model.Movie;
 import com.rappi.rappitest.ui.base.BaseActivity;
 import com.rappi.rappitest.ui.detail.DetailActivity;
+import com.rappi.rappitest.utils.NetworkUtils;
 
 import java.util.List;
 
@@ -71,7 +72,11 @@ public class ListActivity extends BaseActivity implements ListMvpView {
         setupRecyclerView();
         search.addTextChangedListener(new TextWatcherListener());
         search.setOnFocusChangeListener(new TextWatcherListener());
-        presenter.onLoadMoreItems(1);
+
+        if (NetworkUtils.isNetworkConnected(this))
+            presenter.onLoadMoreItems(1);
+        else
+            presenter.onLoadMoreItems(-1);
     }
 
 
@@ -99,6 +104,7 @@ public class ListActivity extends BaseActivity implements ListMvpView {
         recyclerView.setLayoutManager(manager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(new ScrollListener(manager));
     }
 
     @OnClick(R.id.delete)
@@ -140,6 +146,20 @@ public class ListActivity extends BaseActivity implements ListMvpView {
         public void onFocusChange(View v, boolean hasFocus) {
             if (!hasFocus)
                 hideKeyboard();
+        }
+    }
+
+    private class ScrollListener extends EndlessScrollListener {
+
+
+        public ScrollListener(LinearLayoutManager layoutManager) {
+            super(layoutManager);
+            resetState();
+        }
+
+        @Override
+        public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+            presenter.onLoadMoreItems(page);
         }
     }
 }

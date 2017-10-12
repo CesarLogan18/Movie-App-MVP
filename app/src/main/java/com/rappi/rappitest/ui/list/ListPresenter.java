@@ -27,8 +27,35 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
 
     @Override
     public void onLoadMoreItems(int page) {
-        getMvpView().showLoading();
+        if (page >= 0) {
+            loadMoviesFromApi(page);
+        } else
+            loadMoviesFromDataBase();
 
+    }
+
+    private void loadMoviesFromDataBase() {
+        getCompositeDisposable().add(getDataManager()
+                .getAllMovies()
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(new Consumer<List<Movie>>() {
+                    @Override
+                    public void accept(List<Movie> movies) throws Exception {
+
+                        if (!isViewAttached()) {
+                            return;
+                        }
+
+                        getMvpView().refreshList(movies);
+
+
+                    }
+                }));
+    }
+
+    private void loadMoviesFromApi(int page) {
+        getMvpView().showLoading();
         getCompositeDisposable().add(getDataManager()
                 .doMovieListApiCall(page)
                 .subscribeOn(getSchedulerProvider().io())
@@ -42,7 +69,9 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
                         }
 
                         getMvpView().hideLoading();
-                        getMvpView().refreshList(convertApiToList(response));
+                        List<Movie> movies = convertApiToList(response);
+                        getMvpView().refreshList(movies);
+                        saveInDb(movies);
 
                     }
                 }, new Consumer<Throwable>() {
@@ -84,4 +113,22 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
 
         return list;
     }
+
+    private void saveInDb(List<Movie> movies) {
+        for (Movie movie : movies) {
+            getCompositeDisposable().add(getDataManager().insertMovie(movie)
+                    .subscribeOn(getSchedulerProvider().io())
+                    .observeOn(getSchedulerProvider().ui())
+                    .subscribe(new Consumer<Long>() {
+                        @Override
+                        public void accept(Long id) throws Exception {
+                            if (!isViewAttached()) {
+                                return;
+                            }
+                        }
+                    }));
+        }
+    }
+
 }
+

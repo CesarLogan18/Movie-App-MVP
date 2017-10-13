@@ -109,6 +109,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     }
 
     public void deleteItems() {
+        notifyDataSetChanged();
         movies.clear();
     }
 

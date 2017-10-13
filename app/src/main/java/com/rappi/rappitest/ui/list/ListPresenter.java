@@ -27,18 +27,44 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
 
 
     @Override
-    public void onLoadMoreItems(int page) {
+    public void onLoadMoreItems(int page, int position) {
 
         if (page == 1)
-            deleteMovies();
-        loadMoviesFromApi(page);
-
+            deleteMovies(position);
+        loadMoviesFromApi(page, position);
 
     }
 
     @Override
-    public void filterList(String filter) {
-        loadMoviesFromDataBase(filter);
+    public void filterList(int position, String filter) {
+        getMvpView().resetAdapter();
+        loadMoviesFromDataBase(filter, position);
+    }
+
+    @Override
+    public void onModeChange(int position, boolean offLine) {
+
+        if (offLine) {
+            getMvpView().showSearchBar();
+        } else {
+            getMvpView().hideSearchBar();
+            getMvpView().resetAdapter();
+            onLoadMoreItems(1, position);
+        }
+
+    }
+
+    @Override
+    public void onTabChange(int position, boolean offline) {
+        getMvpView().resetAdapter();
+
+        if (offline) {
+            loadMoviesFromDataBase("", position);
+        } else {
+            onLoadMoreItems(1, position);
+        }
+
+
     }
 
     private List<Movie> filterListItems(String filter, List<Movie> items) {
@@ -53,12 +79,13 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
                 filteredList.add(movie);
         }
 
+
         return filteredList;
     }
 
-    private void loadMoviesFromDataBase(final String filter) {
+    private void loadMoviesFromDataBase(final String filter, final int position) {
         getCompositeDisposable().add(getDataManager()
-                .getAllMovies()
+                .getMoviesByCategory(position)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<List<Movie>>() {
@@ -68,22 +95,21 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
                         if (!isViewAttached()) {
                             return;
                         }
+
+                        movies = filterListItems(filter, movies);
                         if (movies.isEmpty())
                             getMvpView().showLabelNoItem();
                         else
                             getMvpView().hideLabelNoItem();
-
-
-                        getMvpView().refreshList(filterListItems(filter, movies));
-                        getMvpView().scrollToPosition(0);
+                        getMvpView().refreshList(movies);
                     }
                 }));
     }
 
-    private void loadMoviesFromApi(int page) {
+    private void loadMoviesFromApi(int page, final int category) {
         getMvpView().showLoading();
         getCompositeDisposable().add(getDataManager()
-                .doMovieListApiCall(page)
+                .doMovieListApiCall(page, category)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<MovieListResponse>() {
@@ -95,7 +121,7 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
                         }
 
                         getMvpView().hideLoading();
-                        List<Movie> movies = convertApiToList(response);
+                        List<Movie> movies = convertApiToList(response, category);
                         getMvpView().refreshList(movies);
                         saveInDb(movies);
 
@@ -119,9 +145,9 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
                 }));
     }
 
-    private void deleteMovies() {
+    private void deleteMovies(int category) {
         getCompositeDisposable().add(getDataManager()
-                .deleteMovies()
+                .deleteMovies(category)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<Boolean>() {
@@ -132,7 +158,7 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
                 }));
     }
 
-    private List<Movie> convertApiToList(MovieListResponse response) {
+    private List<Movie> convertApiToList(MovieListResponse response, int category) {
 
         List<Movie> list = new ArrayList<>();
         for (MovieListResponse.MovieResponse movieResponse : response.getResults()) {
@@ -142,6 +168,7 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
             movie.setVoteAvg(movieResponse.getVoteAverage());
             movie.setImageUrl(movieResponse.getPosterPath());
             movie.setDate(movieResponse.getReleaseDate());
+            movie.setCategory(category);
             list.add(movie);
         }
 

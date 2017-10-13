@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
@@ -7,12 +8,29 @@
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/simple_switch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:checked="false"
+        android:gravity="right|center_vertical"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:text="@string/list_switch_text"
+        android:textColor="@android:color/secondary_text_dark"
+        android:textSize="15sp" />
+
     <LinearLayout
+        android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:orientation="horizontal"
-        android:padding="5dp">
+        android:padding="2dp"
+        android:visibility="gone">
+
 
         <ImageView
             android:layout_width="20dp"
@@ -41,6 +59,15 @@
             android:padding="5dp"
             android:src="@android:drawable/ic_menu_close_clear_cancel" />
     </LinearLayout>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="@color/light_gray" />
 
     <RelativeLayout
         android:layout_width="match_parent"

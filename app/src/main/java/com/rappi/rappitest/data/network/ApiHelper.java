@@ -6,5 +6,6 @@ import com.rappi.rappitest.data.network.model.MovieListResponse;
 import io.reactivex.Observable;
 
 public interface ApiHelper {
-    Observable<MovieListResponse> doMovieListApiCall(int page);
+    Observable<MovieListResponse> doMovieListApiCall(int page,int category);
+
 }

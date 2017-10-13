@@ -3,21 +3,24 @@ package com.rappi.rappitest.ui.list;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.design.widget.TabLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rappi.rappitest.R;
 import com.rappi.rappitest.data.db.model.Movie;
 import com.rappi.rappitest.ui.base.BaseActivity;
 import com.rappi.rappitest.ui.detail.DetailActivity;
-import com.rappi.rappitest.utils.NetworkUtils;
 
 import java.util.List;
 
@@ -36,6 +39,8 @@ public class ListActivity extends BaseActivity implements ListMvpView {
     @Inject
     ListAdapter adapter;
 
+    ScrollListener scrollListener;
+
     @BindView(R.id.search)
     EditText search;
     @BindView(R.id.delete)
@@ -44,6 +49,12 @@ public class ListActivity extends BaseActivity implements ListMvpView {
     RecyclerView recyclerView;
     @BindView(R.id.label_no_items)
     TextView labelNoItems;
+    @BindView(R.id.tab_layout)
+    TabLayout tabLayout;
+    @BindView(R.id.simple_switch)
+    SwitchCompat switchCompat;
+    @BindView(R.id.search_bar)
+    LinearLayout searchBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,15 +81,15 @@ public class ListActivity extends BaseActivity implements ListMvpView {
     @Override
     protected void setUp() {
         setupRecyclerView();
+        setupTabLayout();
+        switchCompat.setOnCheckedChangeListener(new SwitchListener());
+        tabLayout.setOnTabSelectedListener(new TabListener());
         search.addTextChangedListener(new TextWatcherListener());
         search.setOnFocusChangeListener(new TextWatcherListener());
 
-        if (NetworkUtils.isNetworkConnected(this))
-            presenter.onLoadMoreItems(1);
-        else
-            presenter.filterList("");
-    }
+        presenter.onLoadMoreItems(1, 0);
 
+    }
 
     @Override
     public void openDetailActivity(Movie movie) {
@@ -91,11 +102,6 @@ public class ListActivity extends BaseActivity implements ListMvpView {
     }
 
     @Override
-    public void scrollToPosition(int position) {
-        recyclerView.smoothScrollToPosition(0);
-    }
-
-    @Override
     public void showLabelNoItem() {
         labelNoItems.setVisibility(View.VISIBLE);
     }
@@ -105,16 +111,42 @@ public class ListActivity extends BaseActivity implements ListMvpView {
         labelNoItems.setVisibility(View.GONE);
     }
 
+    @Override
+    public void showSearchBar() {
+        searchBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideSearchBar() {
+        searchBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void resetAdapter() {
+        adapter.deleteItems();
+        scrollListener.resetState();
+
+    }
+
     private void setupRecyclerView() {
         recyclerView.setLayoutManager(manager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-        recyclerView.addOnScrollListener(new ScrollListener(manager));
+        scrollListener = new ScrollListener(manager);
+        recyclerView.addOnScrollListener(scrollListener);
+    }
+
+    private void setupTabLayout() {
+
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.list_tab_1));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.list_tab_2));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.list_tab_3));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
     }
 
     @OnClick(R.id.delete)
     public void onViewClicked() {
-
+        search.getText().clear();
     }
 
     private class TextWatcherListener implements TextWatcher, View.OnFocusChangeListener {
@@ -134,10 +166,9 @@ public class ListActivity extends BaseActivity implements ListMvpView {
             workRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    if (!NetworkUtils.isNetworkConnected(ListActivity.this)) {
-                        adapter.deleteItems();
-                        presenter.filterList(s.toString().toLowerCase().trim());
-                    }
+
+                    presenter.filterList(tabLayout.getSelectedTabPosition(), s.toString().toLowerCase().trim());
+
                 }
             };
             handler.postDelayed(workRunnable, 500);
@@ -167,8 +198,34 @@ public class ListActivity extends BaseActivity implements ListMvpView {
 
         @Override
         public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-            if (NetworkUtils.isNetworkConnected(ListActivity.this))
-                presenter.onLoadMoreItems(page);
+            if (!switchCompat.isChecked())
+                presenter.onLoadMoreItems(page, tabLayout.getSelectedTabPosition());
+        }
+    }
+
+    private class SwitchListener implements CompoundButton.OnCheckedChangeListener {
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            presenter.onModeChange(tabLayout.getSelectedTabPosition(), b);
+        }
+    }
+
+    private class TabListener implements TabLayout.OnTabSelectedListener {
+
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            search.getText().clear();
+            presenter.onTabChange(tabLayout.getSelectedTabPosition(), switchCompat.isChecked());
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+
         }
     }
 }

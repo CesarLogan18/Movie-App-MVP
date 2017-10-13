@@ -13,8 +13,8 @@ public interface DbHelper {
 
     Observable<Long> insertMovie(final Movie movie);
 
-    Observable<List<Movie>> getAllMovies();
+    Observable<List<Movie>> getMoviesByCategory(int category);
 
-    Observable<Boolean> deleteMovies();
+    Observable<Boolean> deleteMovies(int category);
 
 }

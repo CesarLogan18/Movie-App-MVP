@@ -15,11 +15,16 @@ public interface ListMvpView extends MvpView {
 
     void refreshList(List<Movie> items);
 
-    void scrollToPosition(int position);
 
     void showLabelNoItem();
 
     void hideLabelNoItem();
+
+    void showSearchBar();
+
+    void hideSearchBar();
+
+    void resetAdapter();
 
 
 }

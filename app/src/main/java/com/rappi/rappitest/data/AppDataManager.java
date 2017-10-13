@@ -55,18 +55,19 @@ public class AppDataManager implements DataManager {
         return mDbHelper.insertMovie(movie);
     }
 
+
     @Override
-    public Observable<List<Movie>> getAllMovies() {
-        return mDbHelper.getAllMovies();
+    public Observable<List<Movie>> getMoviesByCategory(int category) {
+        return mDbHelper.getMoviesByCategory(category);
     }
 
     @Override
-    public Observable<Boolean> deleteMovies() {
-        return mDbHelper.deleteMovies();
+    public Observable<Boolean> deleteMovies(int category) {
+        return mDbHelper.deleteMovies(category);
     }
 
     @Override
-    public Observable<MovieListResponse> doMovieListApiCall(int page) {
-        return mApiHelper.doMovieListApiCall(page);
+    public Observable<MovieListResponse> doMovieListApiCall(int page, int category) {
+        return mApiHelper.doMovieListApiCall(page, category);
     }
 }

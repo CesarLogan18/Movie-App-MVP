@@ -8,6 +8,10 @@
     <string name="all_loading_msg">Loading...</string>
 
     <!-- List Message -->
-    <string name="list_hint_search">Search an item</string>
+    <string name="list_hint_search">Search movie by name, rating or year</string>
     <string name="list_msg_no_items">No items found</string>
+    <string name="list_tab_1">Popular</string>
+    <string name="list_tab_2">Top Rated</string>
+    <string name="list_tab_3">Upcoming</string>
+    <string name="list_switch_text">Offline mode</string>
 </resources>

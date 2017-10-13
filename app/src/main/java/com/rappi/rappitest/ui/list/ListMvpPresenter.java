@@ -9,8 +9,12 @@ import com.rappi.rappitest.ui.base.MvpPresenter;
 @PerActivity
 public interface ListMvpPresenter<V extends ListMvpView> extends MvpPresenter<V> {
 
-    void onLoadMoreItems(int page);
+    void onLoadMoreItems(int page, int position);
 
-    void filterList(String filter);
+    void filterList(int position, String filter);
+
+    void onModeChange(int position, boolean offLine);
+
+    void onTabChange(int position, boolean offLine);
 
 }

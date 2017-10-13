@@ -19,9 +19,23 @@ public class AppApiHelper implements ApiHelper {
     public AppApiHelper() {
 
     }
+
     @Override
-    public Observable<MovieListResponse> doMovieListApiCall(int page) {
-        return Rx2AndroidNetworking.get(ApiEndPoint.ENDPOINT_MOVIES)
+    public Observable<MovieListResponse> doMovieListApiCall(int page, int category) {
+        String Url = "";
+
+        switch (category) {
+            case 0:
+                Url = ApiEndPoint.ENDPOINT_MOVIES_POPULAR;
+                break;
+            case 1:
+                Url = ApiEndPoint.ENDPOINT_MOVIES_TOP_RATED;
+                break;
+            case 2:
+                Url = ApiEndPoint.ENDPOINT_MOVIES_UPCOMING;
+                break;
+        }
+        return Rx2AndroidNetworking.get(Url)
                 .addQueryParameter(ApiEndPoint.ENDPOINT_MOVIES_PARAM_PAGE, String.valueOf(page))
                 .addQueryParameter(ApiEndPoint.ENDPOINT_MOVIES_PARAM_API, BuildConfig.API_KEY)
                 .build()

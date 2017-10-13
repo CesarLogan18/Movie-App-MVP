@@ -34,10 +34,13 @@ public class Movie {
     @Property(nameInDb = "updated_at")
     private String updatedAt;
 
+    @Property(nameInDb = "category")
+    private int category;
 
-    @Generated(hash = 1348962514)
+
+    @Generated(hash = 395616148)
     public Movie(Long id, String name, String language, double voteAvg, String imageUrl, String date,
-            String createdAt, String updatedAt) {
+            String createdAt, String updatedAt, int category) {
         this.id = id;
         this.name = name;
         this.language = language;
@@ -46,6 +49,7 @@ public class Movie {
         this.date = date;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.category = category;
     }
 
     @Generated(hash = 1263461133)
@@ -114,5 +118,13 @@ public class Movie {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
     }
 }

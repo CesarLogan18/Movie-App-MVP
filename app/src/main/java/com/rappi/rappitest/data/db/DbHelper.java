@@ -15,4 +15,6 @@ public interface DbHelper {
 
     Observable<List<Movie>> getAllMovies();
 
+    Observable<Boolean> deleteMovies();
+
 }

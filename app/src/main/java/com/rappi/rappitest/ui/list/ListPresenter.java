@@ -5,6 +5,7 @@ import com.rappi.rappitest.data.DataManager;
 import com.rappi.rappitest.data.db.model.Movie;
 import com.rappi.rappitest.data.network.model.MovieListResponse;
 import com.rappi.rappitest.ui.base.BasePresenter;
+import com.rappi.rappitest.utils.AppLogger;
 import com.rappi.rappitest.utils.rx.SchedulerProvider;
 
 import java.util.ArrayList;
@@ -27,14 +28,35 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
 
     @Override
     public void onLoadMoreItems(int page) {
-        if (page >= 0) {
-            loadMoviesFromApi(page);
-        } else
-            loadMoviesFromDataBase();
+
+        if (page == 1)
+            deleteMovies();
+        loadMoviesFromApi(page);
+
 
     }
 
-    private void loadMoviesFromDataBase() {
+    @Override
+    public void filterList(String filter) {
+        loadMoviesFromDataBase(filter);
+    }
+
+    private List<Movie> filterListItems(String filter, List<Movie> items) {
+        List<Movie> filteredList = new ArrayList<>();
+
+        for (Movie movie : items) {
+            if (movie.getName().toLowerCase().contains(filter))
+                filteredList.add(movie);
+            else if (movie.getDate().toLowerCase().contains(filter))
+                filteredList.add(movie);
+            else if (String.valueOf(movie.getVoteAvg()).toLowerCase().contains(filter))
+                filteredList.add(movie);
+        }
+
+        return filteredList;
+    }
+
+    private void loadMoviesFromDataBase(final String filter) {
         getCompositeDisposable().add(getDataManager()
                 .getAllMovies()
                 .subscribeOn(getSchedulerProvider().io())
@@ -46,10 +68,14 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
                         if (!isViewAttached()) {
                             return;
                         }
+                        if (movies.isEmpty())
+                            getMvpView().showLabelNoItem();
+                        else
+                            getMvpView().hideLabelNoItem();
 
-                        getMvpView().refreshList(movies);
 
-
+                        getMvpView().refreshList(filterListItems(filter, movies));
+                        getMvpView().scrollToPosition(0);
                     }
                 }));
     }
@@ -93,9 +119,17 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
                 }));
     }
 
-    @Override
-    public void filterList(String filter) {
-
+    private void deleteMovies() {
+        getCompositeDisposable().add(getDataManager()
+                .deleteMovies()
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(Boolean response) throws Exception {
+                        AppLogger.d("Table Cleared");
+                    }
+                }));
     }
 
     private List<Movie> convertApiToList(MovieListResponse response) {

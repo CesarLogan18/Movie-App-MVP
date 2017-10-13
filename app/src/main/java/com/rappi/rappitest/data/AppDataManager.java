@@ -61,6 +61,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Observable<Boolean> deleteMovies() {
+        return mDbHelper.deleteMovies();
+    }
+
+    @Override
     public Observable<MovieListResponse> doMovieListApiCall(int page) {
         return mApiHelper.doMovieListApiCall(page);
     }

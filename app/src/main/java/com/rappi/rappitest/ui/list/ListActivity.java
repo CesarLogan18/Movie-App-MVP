@@ -76,7 +76,7 @@ public class ListActivity extends BaseActivity implements ListMvpView {
         if (NetworkUtils.isNetworkConnected(this))
             presenter.onLoadMoreItems(1);
         else
-            presenter.onLoadMoreItems(-1);
+            presenter.filterList("");
     }
 
 
@@ -88,6 +88,11 @@ public class ListActivity extends BaseActivity implements ListMvpView {
     @Override
     public void refreshList(List<Movie> items) {
         adapter.addItems(items);
+    }
+
+    @Override
+    public void scrollToPosition(int position) {
+        recyclerView.smoothScrollToPosition(0);
     }
 
     @Override
@@ -129,7 +134,10 @@ public class ListActivity extends BaseActivity implements ListMvpView {
             workRunnable = new Runnable() {
                 @Override
                 public void run() {
-                    presenter.filterList(s.toString().toLowerCase().trim());
+                    if (!NetworkUtils.isNetworkConnected(ListActivity.this)) {
+                        adapter.deleteItems();
+                        presenter.filterList(s.toString().toLowerCase().trim());
+                    }
                 }
             };
             handler.postDelayed(workRunnable, 500);
@@ -159,7 +167,8 @@ public class ListActivity extends BaseActivity implements ListMvpView {
 
         @Override
         public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-            presenter.onLoadMoreItems(page);
+            if (NetworkUtils.isNetworkConnected(ListActivity.this))
+                presenter.onLoadMoreItems(page);
         }
     }
 }

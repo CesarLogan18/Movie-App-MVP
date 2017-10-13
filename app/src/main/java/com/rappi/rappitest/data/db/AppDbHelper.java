@@ -44,4 +44,15 @@ public class AppDbHelper implements DbHelper {
             }
         });
     }
+
+    @Override
+    public Observable<Boolean> deleteMovies() {
+        return Observable.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                mDaoSession.getMovieDao().deleteAll();
+                return true;
+            }
+        });
+    }
 }

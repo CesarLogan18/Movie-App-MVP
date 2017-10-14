@@ -6,6 +6,7 @@ import com.rappi.rappitest.data.db.model.Movie;
 import com.rappi.rappitest.data.network.model.MovieListResponse;
 import com.rappi.rappitest.ui.base.BasePresenter;
 import com.rappi.rappitest.utils.AppLogger;
+import com.rappi.rappitest.utils.CommonUtils;
 import com.rappi.rappitest.utils.rx.SchedulerProvider;
 
 import java.util.ArrayList;
@@ -169,6 +170,11 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
             movie.setImageUrl(movieResponse.getPosterPath());
             movie.setDate(movieResponse.getReleaseDate());
             movie.setCategory(category);
+            movie.setAdultContent(movieResponse.getAdult());
+            movie.setOverview(movieResponse.getOverview());
+            movie.setPopularity(movieResponse.getPopularity());
+            movie.setCreatedAt(CommonUtils.getTimeStamp());
+            movie.setUpdatedAt(CommonUtils.getTimeStamp());
             list.add(movie);
         }
 

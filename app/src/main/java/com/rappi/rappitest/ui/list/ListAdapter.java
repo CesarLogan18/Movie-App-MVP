@@ -72,21 +72,16 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
                     .apply(RequestOptions.circleCropTransform())
                     .into(photo);
 
-
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if (repo.getProjectUrl() != null) {
-//                        Intent intent = new Intent();
-//                        intent.setAction(Intent.ACTION_VIEW);
-//                        intent.addCategory(Intent.CATEGORY_BROWSABLE);
-//                        intent.setData(Uri.parse(repo.getProjectUrl()));
-//                        itemView.getContext().startActivity(intent);
-//                    }
-//                }
-//            });
+            itemView.setTag(position);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCallback.onItemClick(movies.get((Integer) v.getTag()));
+                }
+            });
         }
     }
+
 
     public void setCallback(Callback callback) {
         mCallback = callback;

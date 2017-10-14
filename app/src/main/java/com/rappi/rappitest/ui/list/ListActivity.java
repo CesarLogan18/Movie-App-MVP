@@ -30,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ListActivity extends BaseActivity implements ListMvpView {
+public class ListActivity extends BaseActivity implements ListMvpView, ListAdapter.Callback {
 
     @Inject
     LinearLayoutManager manager;
@@ -80,6 +80,7 @@ public class ListActivity extends BaseActivity implements ListMvpView {
 
     @Override
     protected void setUp() {
+        adapter.setCallback(this);
         setupRecyclerView();
         setupTabLayout();
         switchCompat.setOnCheckedChangeListener(new SwitchListener());
@@ -93,7 +94,7 @@ public class ListActivity extends BaseActivity implements ListMvpView {
 
     @Override
     public void openDetailActivity(Movie movie) {
-        startActivity(DetailActivity.getStartIntent(this));
+        startActivity(DetailActivity.getStartIntent(this, movie));
     }
 
     @Override
@@ -147,6 +148,11 @@ public class ListActivity extends BaseActivity implements ListMvpView {
     @OnClick(R.id.delete)
     public void onViewClicked() {
         search.getText().clear();
+    }
+
+    @Override
+    public void onItemClick(Movie movie) {
+        startActivity(DetailActivity.getStartIntent(this, movie));
     }
 
     private class TextWatcherListener implements TextWatcher, View.OnFocusChangeListener {

@@ -14,4 +14,11 @@
     <string name="list_tab_2">Top Rated</string>
     <string name="list_tab_3">Upcoming</string>
     <string name="list_switch_text">Offline mode</string>
+
+    <!-- Detail Message -->
+    <string name="detail_label_overview">Overview</string>
+    <string name="detail_label_language">Language</string>
+    <string name="detail_label_adult_content">Adult Content</string>
+    <string name="detail_label_release_date">Release Date</string>
+    <string name="detail_label_popularity">Popularity</string>
 </resources>

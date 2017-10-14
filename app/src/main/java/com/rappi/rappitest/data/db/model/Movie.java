@@ -6,9 +6,13 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Property;
 
+import java.io.Serializable;
+
 
 @Entity(nameInDb = "movie")
-public class Movie {
+public class Movie implements Serializable {
+
+    private static final long serialVersionUID = 7526472295622776147L;
 
     @Id(autoincrement = true)
     private Long id;
@@ -37,10 +41,19 @@ public class Movie {
     @Property(nameInDb = "category")
     private int category;
 
+    @Property(nameInDb = "overview")
+    private String overview;
 
-    @Generated(hash = 395616148)
+    @Property(nameInDb = "adult_contemt")
+    private boolean adultContent;
+
+    @Property(nameInDb = "popularity")
+    private double popularity;
+
+    @Generated(hash = 218898591)
     public Movie(Long id, String name, String language, double voteAvg, String imageUrl, String date,
-            String createdAt, String updatedAt, int category) {
+            String createdAt, String updatedAt, int category, String overview, boolean adultContent,
+            double popularity) {
         this.id = id;
         this.name = name;
         this.language = language;
@@ -50,6 +63,9 @@ public class Movie {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.category = category;
+        this.overview = overview;
+        this.adultContent = adultContent;
+        this.popularity = popularity;
     }
 
     @Generated(hash = 1263461133)
@@ -126,5 +142,33 @@ public class Movie {
 
     public void setCategory(int category) {
         this.category = category;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
+
+    public boolean isAdultContent() {
+        return adultContent;
+    }
+
+    public void setAdultContent(boolean adultContent) {
+        this.adultContent = adultContent;
+    }
+
+    public double getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(double popularity) {
+        this.popularity = popularity;
+    }
+
+    public boolean getAdultContent() {
+        return this.adultContent;
     }
 }

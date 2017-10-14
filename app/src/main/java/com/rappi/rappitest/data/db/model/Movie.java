@@ -1,5 +1,8 @@
-
 package com.rappi.rappitest.data.db.model;
+
+import android.support.annotation.NonNull;
+
+import com.rappi.rappitest.utils.ErrorHandlerUtils;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -44,7 +47,7 @@ public class Movie implements Serializable {
     @Property(nameInDb = "overview")
     private String overview;
 
-    @Property(nameInDb = "adult_contemt")
+    @Property(nameInDb = "adult_content")
     private boolean adultContent;
 
     @Property(nameInDb = "popularity")
@@ -52,8 +55,8 @@ public class Movie implements Serializable {
 
     @Generated(hash = 218898591)
     public Movie(Long id, String name, String language, double voteAvg, String imageUrl, String date,
-            String createdAt, String updatedAt, int category, String overview, boolean adultContent,
-            double popularity) {
+                 String createdAt, String updatedAt, int category, String overview, boolean adultContent,
+                 double popularity) {
         this.id = id;
         this.name = name;
         this.language = language;
@@ -80,16 +83,18 @@ public class Movie implements Serializable {
         this.id = id;
     }
 
+    @NonNull
     public String getName() {
-        return name;
+        return ErrorHandlerUtils.checkIfStringNullReturnEmpty(name);
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    @NonNull
     public String getLanguage() {
-        return language;
+        return ErrorHandlerUtils.checkIfStringNullReturnEmpty(language);
     }
 
     public void setLanguage(String language) {
@@ -104,32 +109,36 @@ public class Movie implements Serializable {
         this.voteAvg = voteAvg;
     }
 
+    @NonNull
     public String getCreatedAt() {
-        return createdAt;
+        return ErrorHandlerUtils.checkIfStringNullReturnEmpty(createdAt);
     }
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
 
+    @NonNull
     public String getUpdatedAt() {
-        return updatedAt;
+        return ErrorHandlerUtils.checkIfStringNullReturnEmpty(updatedAt);
     }
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
     }
 
+    @NonNull
     public String getImageUrl() {
-        return imageUrl;
+        return ErrorHandlerUtils.checkIfStringNullReturnEmpty(imageUrl);
     }
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
+    @NonNull
     public String getDate() {
-        return date;
+        return ErrorHandlerUtils.checkIfStringNullReturnEmpty(date);
     }
 
     public void setDate(String date) {
@@ -144,8 +153,9 @@ public class Movie implements Serializable {
         this.category = category;
     }
 
+    @NonNull
     public String getOverview() {
-        return overview;
+        return ErrorHandlerUtils.checkIfStringNullReturnEmpty(overview);
     }
 
     public void setOverview(String overview) {

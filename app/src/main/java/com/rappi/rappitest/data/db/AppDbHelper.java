@@ -1,11 +1,10 @@
-
 package com.rappi.rappitest.data.db;
-
 
 import com.rappi.rappitest.data.db.model.DaoMaster;
 import com.rappi.rappitest.data.db.model.DaoSession;
 import com.rappi.rappitest.data.db.model.Movie;
 import com.rappi.rappitest.data.db.model.MovieDao;
+import com.rappi.rappitest.utils.AppLogger;
 
 import org.greenrobot.greendao.query.Query;
 
@@ -16,7 +15,6 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
-
 
 @Singleton
 public class AppDbHelper implements DbHelper {
@@ -33,6 +31,7 @@ public class AppDbHelper implements DbHelper {
         return Observable.fromCallable(new Callable<Long>() {
             @Override
             public Long call() throws Exception {
+                AppLogger.d("Inserting Movie");
                 return mDaoSession.getMovieDao().insert(movie);
             }
         });
@@ -43,6 +42,7 @@ public class AppDbHelper implements DbHelper {
         return Observable.fromCallable(new Callable<List<Movie>>() {
             @Override
             public List<Movie> call() throws Exception {
+                AppLogger.d("Getting Movies");
                 Query<Movie> query = mDaoSession.getMovieDao().queryBuilder().where(
                         MovieDao.Properties.Category.eq(category)
                 ).build();
@@ -57,6 +57,7 @@ public class AppDbHelper implements DbHelper {
         return Observable.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
+                AppLogger.d("Deleting Movie");
                 Query<Movie> query = mDaoSession.getMovieDao().queryBuilder().where(
                         MovieDao.Properties.Category.eq(category)
                 ).build();

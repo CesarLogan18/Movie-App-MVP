@@ -1,4 +1,3 @@
-
 package com.rappi.rappitest.ui.base;
 
 import com.androidnetworking.error.ANError;

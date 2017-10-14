@@ -13,8 +13,6 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
 
-    private static final String TAG = "BasePresenter";
-
     private final DataManager mDataManager;
     private final SchedulerProvider mSchedulerProvider;
     private final CompositeDisposable mCompositeDisposable;
@@ -83,7 +81,7 @@ public class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
             getMvpView().onError(R.string.api_retry_error);
             return;
         }
-
+        getMvpView().onError(R.string.api_default_error);
     }
 
 }

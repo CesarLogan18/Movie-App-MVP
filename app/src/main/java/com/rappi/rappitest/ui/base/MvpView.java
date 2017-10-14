@@ -1,4 +1,3 @@
-
 package com.rappi.rappitest.ui.base;
 
 import android.support.annotation.StringRes;

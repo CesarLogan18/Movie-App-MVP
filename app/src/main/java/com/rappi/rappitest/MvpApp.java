@@ -1,4 +1,3 @@
-
 package com.rappi.rappitest;
 
 import android.app.Application;
@@ -11,8 +10,11 @@ import com.rappi.rappitest.di.component.DaggerApplicationComponent;
 import com.rappi.rappitest.di.module.ApplicationModule;
 import com.rappi.rappitest.utils.AppLogger;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
+import okhttp3.OkHttpClient;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class MvpApp extends Application {
@@ -35,8 +37,13 @@ public class MvpApp extends Application {
         mApplicationComponent.inject(this);
 
         AppLogger.init();
+        OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
+                .build();
 
-        AndroidNetworking.initialize(getApplicationContext());
+        AndroidNetworking.initialize(getApplicationContext(), okHttpClient);
         if (BuildConfig.DEBUG) {
             AndroidNetworking.enableLogging(Level.BODY);
         }

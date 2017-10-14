@@ -1,5 +1,3 @@
-
-
 package com.rappi.rappitest.utils;
 
 import android.content.Context;
@@ -15,9 +13,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 public final class CommonUtils {
-
-    private static final String TAG = "CommonUtils";
-
     private CommonUtils() {
         // This utility class is not publicly instantiable
     }

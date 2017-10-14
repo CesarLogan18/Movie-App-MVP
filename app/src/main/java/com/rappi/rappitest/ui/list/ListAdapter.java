@@ -33,7 +33,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     private ArrayList<Movie> movies;
     private Callback mCallback;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder {
         int position;
         @BindView(R.id.photo)
         ImageView photo;
@@ -44,13 +44,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         @BindView(R.id.year)
         TextView year;
 
-        public MyViewHolder(View root) {
+        MyViewHolder(View root) {
             super(root);
             ButterKnife.bind(this, itemView);
             setIsRecyclable(false);
         }
 
-        public void onBind(int position) {
+        void onBind(int position) {
             this.position = position;
 
             final Movie movie = movies.get(position);
@@ -73,17 +73,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
                     .into(photo);
 
             itemView.setTag(position);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mCallback.onItemClick(movies.get((Integer) v.getTag()));
-                }
-            });
+            itemView.setOnClickListener(new OnClickItemListener());
         }
     }
 
-
-    public void setCallback(Callback callback) {
+    void setCallback(Callback callback) {
         mCallback = callback;
     }
 
@@ -93,17 +87,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
     }
 
     @Inject
-    public ListAdapter() {
+    ListAdapter() {
         this.movies = new ArrayList<>();
     }
 
-    public void addItems(List<Movie> movies) {
+    void addItems(List<Movie> movies) {
         ErrorHandlerUtils.mCheckNotNull(movies);
         this.movies.addAll(movies);
         notifyDataSetChanged();
     }
 
-    public void deleteItems() {
+    void deleteItems() {
         notifyDataSetChanged();
         movies.clear();
     }
@@ -128,7 +122,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         }
     }
 
-    public interface Callback {
+    interface Callback {
         void onItemClick(Movie movie);
     }
 

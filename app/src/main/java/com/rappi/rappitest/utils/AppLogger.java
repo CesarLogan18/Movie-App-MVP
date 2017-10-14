@@ -1,6 +1,3 @@
-
-
-
 package com.rappi.rappitest.utils;
 
 import com.rappi.rappitest.BuildConfig;

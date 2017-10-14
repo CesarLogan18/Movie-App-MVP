@@ -1,5 +1,3 @@
-
-
 package com.rappi.rappitest.data.network;
 
 import com.rappi.rappitest.BuildConfig;

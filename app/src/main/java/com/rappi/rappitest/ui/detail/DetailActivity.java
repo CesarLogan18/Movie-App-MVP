@@ -43,8 +43,7 @@ public class DetailActivity extends BaseActivity implements DetailMvpView {
 
 
     public static Intent getStartIntent(Context context) {
-        Intent intent = new Intent(context, DetailActivity.class);
-        return intent;
+        return new Intent(context, DetailActivity.class);
     }
 
     @Override

@@ -1,4 +1,3 @@
-
 package com.rappi.rappitest.di.module;
 
 import android.app.Application;
@@ -22,8 +21,6 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-
-
 
 @Module
 public class ApplicationModule {

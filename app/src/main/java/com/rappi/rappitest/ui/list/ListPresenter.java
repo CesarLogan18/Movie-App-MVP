@@ -26,46 +26,42 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
         super(dataManager, schedulerProvider, compositeDisposable);
     }
 
-
     @Override
-    public void onLoadMoreItems(int page, int position) {
+    public void onLoadMoreItems(int page, int category) {
 
         if (page == 1)
-            deleteMovies(position);
-        loadMoviesFromApi(page, position);
-
+            deleteMovies(category);
+        loadMoviesFromApi(page, category);
     }
 
     @Override
-    public void filterList(int position, String filter) {
+    public void filterList(int category, String filter) {
         getMvpView().resetAdapter();
-        loadMoviesFromDataBase(filter, position);
+        loadMoviesFromDataBase(filter, category);
     }
 
     @Override
-    public void onModeChange(int position, boolean offLine) {
+    public void onModeChange(int category, boolean offLine) {
 
         if (offLine) {
             getMvpView().showSearchBar();
         } else {
             getMvpView().hideSearchBar();
             getMvpView().resetAdapter();
-            onLoadMoreItems(1, position);
+            onLoadMoreItems(1, category);
         }
 
     }
 
     @Override
-    public void onTabChange(int position, boolean offline) {
+    public void onTabChange(int category, boolean offline) {
         getMvpView().resetAdapter();
 
         if (offline) {
-            loadMoviesFromDataBase("", position);
+            loadMoviesFromDataBase("", category);
         } else {
-            onLoadMoreItems(1, position);
+            onLoadMoreItems(1, category);
         }
-
-
     }
 
     @Override
@@ -85,14 +81,12 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
             else if (String.valueOf(movie.getVoteAvg()).toLowerCase().contains(filter))
                 filteredList.add(movie);
         }
-
-
         return filteredList;
     }
 
-    private void loadMoviesFromDataBase(final String filter, final int position) {
+    private void loadMoviesFromDataBase(final String filter, final int category) {
         getCompositeDisposable().add(getDataManager()
-                .getMoviesByCategory(position)
+                .getMoviesByCategory(category)
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(new Consumer<List<Movie>>() {

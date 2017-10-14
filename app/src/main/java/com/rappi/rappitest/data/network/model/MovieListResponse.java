@@ -1,5 +1,6 @@
-
 package com.rappi.rappitest.data.network.model;
+
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 import com.rappi.rappitest.utils.ErrorHandlerUtils;
@@ -17,18 +18,6 @@ public class MovieListResponse {
     private int totalPages;
     @SerializedName("results")
     private List<MovieResponse> results;
-
-    public int getPage() {
-        return page;
-    }
-
-    public int getTotalResults() {
-        return totalResults;
-    }
-
-    public int getTotalPages() {
-        return totalPages;
-    }
 
     public List<MovieResponse> getResults() {
         if (results == null) {
@@ -83,6 +72,7 @@ public class MovieListResponse {
             return voteAverage;
         }
 
+        @NonNull
         public String getTitle() {
             return ErrorHandlerUtils.checkIfStringNullReturnEmpty(title);
         }
@@ -91,15 +81,17 @@ public class MovieListResponse {
             return popularity;
         }
 
+        @NonNull
         public String getPosterPath() {
             return ErrorHandlerUtils.checkIfStringNullReturnEmpty(posterPath);
-
         }
 
+        @NonNull
         public String getOriginalLanguage() {
             return ErrorHandlerUtils.checkIfStringNullReturnEmpty(originalLanguage);
         }
 
+        @NonNull
         public String getOriginalTitle() {
             return ErrorHandlerUtils.checkIfStringNullReturnEmpty(originalTitle);
         }
@@ -111,6 +103,7 @@ public class MovieListResponse {
             return genreIds;
         }
 
+        @NonNull
         public String getBackdropPath() {
             return ErrorHandlerUtils.checkIfStringNullReturnEmpty(backdropPath);
         }
@@ -119,10 +112,12 @@ public class MovieListResponse {
             return adult;
         }
 
+        @NonNull
         public String getOverview() {
             return ErrorHandlerUtils.checkIfStringNullReturnEmpty(overview);
         }
 
+        @NonNull
         public String getReleaseDate() {
             return ErrorHandlerUtils.checkIfStringNullReturnEmpty(releaseDate);
         }

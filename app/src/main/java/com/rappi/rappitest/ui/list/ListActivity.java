@@ -68,8 +68,9 @@ public class ListActivity extends BaseActivity implements ListMvpView, ListAdapt
 
         presenter.onAttach(ListActivity.this);
 
-        setUp();
+        configCloseKeyBoardTouchOutside(searchBar);
 
+        setUp();
     }
 
     @Override
@@ -89,9 +90,7 @@ public class ListActivity extends BaseActivity implements ListMvpView, ListAdapt
         search.setOnFocusChangeListener(new TextWatcherListener());
 
         presenter.onLoadMoreItems(1, 0);
-
     }
-
 
     @Override
     public void openDetailActivity() {
@@ -127,7 +126,6 @@ public class ListActivity extends BaseActivity implements ListMvpView, ListAdapt
     public void resetAdapter() {
         adapter.deleteItems();
         scrollListener.resetState();
-
     }
 
     private void setupRecyclerView() {
@@ -139,7 +137,6 @@ public class ListActivity extends BaseActivity implements ListMvpView, ListAdapt
     }
 
     private void setupTabLayout() {
-
         tabLayout.addTab(tabLayout.newTab().setText(R.string.list_tab_1));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.list_tab_2));
         tabLayout.addTab(tabLayout.newTab().setText(R.string.list_tab_3));
@@ -173,9 +170,7 @@ public class ListActivity extends BaseActivity implements ListMvpView, ListAdapt
             workRunnable = new Runnable() {
                 @Override
                 public void run() {
-
                     presenter.filterList(tabLayout.getSelectedTabPosition(), s.toString().toLowerCase().trim());
-
                 }
             };
             handler.postDelayed(workRunnable, 500);
@@ -198,7 +193,7 @@ public class ListActivity extends BaseActivity implements ListMvpView, ListAdapt
     private class ScrollListener extends EndlessScrollListener {
 
 
-        public ScrollListener(LinearLayoutManager layoutManager) {
+        ScrollListener(LinearLayoutManager layoutManager) {
             super(layoutManager);
             resetState();
         }

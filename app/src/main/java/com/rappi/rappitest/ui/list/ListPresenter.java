@@ -68,6 +68,12 @@ public class ListPresenter<V extends ListMvpView> extends BasePresenter<V> imple
 
     }
 
+    @Override
+    public void onMovieSelected(Movie movie) {
+        getDataManager().setCurrentMovie(movie);
+        getMvpView().openDetailActivity();
+    }
+
     private List<Movie> filterListItems(String filter, List<Movie> items) {
         List<Movie> filteredList = new ArrayList<>();
 

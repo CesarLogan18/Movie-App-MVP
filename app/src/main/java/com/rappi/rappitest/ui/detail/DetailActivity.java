@@ -13,13 +13,17 @@ import com.rappi.rappitest.data.db.model.Movie;
 import com.rappi.rappitest.data.network.ApiEndPoint;
 import com.rappi.rappitest.ui.base.BaseActivity;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class DetailActivity extends BaseActivity {
-    public static final String PARAM_MOVIE = "MOVIE";
+public class DetailActivity extends BaseActivity implements DetailMvpView {
+
+    @Inject
+    DetailPresenter<DetailMvpView> presenter;
     @BindView(R.id.photo)
     ImageView photo;
     @BindView(R.id.name)
@@ -36,11 +40,10 @@ public class DetailActivity extends BaseActivity {
     TextView releaseDate;
     @BindView(R.id.popularity)
     TextView popularity;
-    private Movie movie;
 
-    public static Intent getStartIntent(Context context, Movie movie) {
+
+    public static Intent getStartIntent(Context context) {
         Intent intent = new Intent(context, DetailActivity.class);
-        intent.putExtra(PARAM_MOVIE, movie);
         return intent;
     }
 
@@ -48,16 +51,30 @@ public class DetailActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        ButterKnife.bind(this);
-        if (getIntent() != null && getIntent().hasExtra(PARAM_MOVIE)) {
-            movie = (Movie) getIntent().getSerializableExtra(PARAM_MOVIE);
-            setUp();
-        }
+
+        getActivityComponent().inject(this);
+
+        setUnBinder(ButterKnife.bind(this));
+
+        presenter.onAttach(DetailActivity.this);
+
+        setUp();
 
     }
 
     @Override
     protected void setUp() {
+        presenter.loadCurrentMovie();
+
+    }
+
+    @OnClick(R.id.back)
+    public void onViewClicked() {
+        onBackPressed();
+    }
+
+    @Override
+    public void updateUI(Movie movie) {
         Glide.with(this)
                 .load(ApiEndPoint.ENDPOINT_IMAGES + movie.getImageUrl())
                 .apply(RequestOptions.centerCropTransform())
@@ -73,8 +90,9 @@ public class DetailActivity extends BaseActivity {
         popularity.setText(String.valueOf(movie.getPopularity()));
     }
 
-    @OnClick(R.id.back)
-    public void onViewClicked() {
-        onBackPressed();
+    @Override
+    protected void onDestroy() {
+        presenter.onDetach();
+        super.onDestroy();
     }
 }

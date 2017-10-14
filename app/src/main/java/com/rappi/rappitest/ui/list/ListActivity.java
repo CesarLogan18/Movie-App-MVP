@@ -92,9 +92,10 @@ public class ListActivity extends BaseActivity implements ListMvpView, ListAdapt
 
     }
 
+
     @Override
-    public void openDetailActivity(Movie movie) {
-        startActivity(DetailActivity.getStartIntent(this, movie));
+    public void openDetailActivity() {
+        startActivity(DetailActivity.getStartIntent(this));
     }
 
     @Override
@@ -152,7 +153,7 @@ public class ListActivity extends BaseActivity implements ListMvpView, ListAdapt
 
     @Override
     public void onItemClick(Movie movie) {
-        startActivity(DetailActivity.getStartIntent(this, movie));
+        presenter.onMovieSelected(movie);
     }
 
     private class TextWatcherListener implements TextWatcher, View.OnFocusChangeListener {

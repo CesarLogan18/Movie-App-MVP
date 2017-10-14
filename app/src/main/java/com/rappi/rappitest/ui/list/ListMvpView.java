@@ -11,10 +11,9 @@ import java.util.List;
 
 public interface ListMvpView extends MvpView {
 
-    void openDetailActivity(Movie movie);
+    void openDetailActivity();
 
     void refreshList(List<Movie> items);
-
 
     void showLabelNoItem();
 

@@ -7,6 +7,9 @@ import android.support.v7.widget.LinearLayoutManager;
 
 import com.rappi.rappitest.di.ActivityContext;
 import com.rappi.rappitest.di.PerActivity;
+import com.rappi.rappitest.ui.detail.DetailMvpPresenter;
+import com.rappi.rappitest.ui.detail.DetailMvpView;
+import com.rappi.rappitest.ui.detail.DetailPresenter;
 import com.rappi.rappitest.ui.list.ListMvpPresenter;
 import com.rappi.rappitest.ui.list.ListMvpView;
 import com.rappi.rappitest.ui.list.ListPresenter;
@@ -55,6 +58,12 @@ public class ActivityModule {
     @Provides
     @PerActivity
     ListMvpPresenter<ListMvpView> provideListPresenter(ListPresenter<ListMvpView> presenter) {
+        return presenter;
+    }
+
+    @Provides
+    @PerActivity
+    DetailMvpPresenter<DetailMvpView> provideDetailPresenter(DetailPresenter<DetailMvpView> presenter) {
         return presenter;
     }
 }

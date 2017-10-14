@@ -3,6 +3,7 @@
 package com.rappi.rappitest.ui.list;
 
 
+import com.rappi.rappitest.data.db.model.Movie;
 import com.rappi.rappitest.di.PerActivity;
 import com.rappi.rappitest.ui.base.MvpPresenter;
 
@@ -16,5 +17,7 @@ public interface ListMvpPresenter<V extends ListMvpView> extends MvpPresenter<V>
     void onModeChange(int position, boolean offLine);
 
     void onTabChange(int position, boolean offLine);
+
+    void onMovieSelected(Movie movie);
 
 }

@@ -40,6 +40,7 @@ public class AppDataManager implements DataManager {
     private final Context mContext;
     private final DbHelper mDbHelper;
     private final ApiHelper mApiHelper;
+    private Movie movie;
 
     @Inject
     public AppDataManager(@ApplicationContext Context context,
@@ -69,5 +70,15 @@ public class AppDataManager implements DataManager {
     @Override
     public Observable<MovieListResponse> doMovieListApiCall(int page, int category) {
         return mApiHelper.doMovieListApiCall(page, category);
+    }
+
+    @Override
+    public void setCurrentMovie(Movie movie) {
+        this.movie = movie;
+    }
+
+    @Override
+    public Movie getCurrentMovie() {
+        return movie;
     }
 }

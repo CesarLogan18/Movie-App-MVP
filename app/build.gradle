@@ -42,7 +42,6 @@ dependencies {
     compile "com.android.support:design:${version.supportLibraryVersion}"
     compile "com.android.support:support-vector-drawable:${version.supportLibraryVersion}"
     compile "com.android.support:animated-vector-drawable:${version.supportLibraryVersion}"
-    compile "com.android.support.constraint:constraint-layout:${version.contraintLayoutLibraryVersion}"
 
     // fonts
     compile "uk.co.chrisjenx:calligraphy:${version.caligraphyVersion}"
@@ -86,13 +85,8 @@ dependencies {
     // logger
     compile "com.jakewharton.timber:timber:${version.timberVersion}"
 
-    //animations
-    compile "com.nineoldandroids:library:${version.animationLibrary1Version}"
-    compile "com.daimajia.easing:library:${version.animationLibrary2Version}"
-    compile "com.daimajia.androidanimations:library:${version.animationLibrary3Version}"
 
     compile 'javax.inject:javax.inject:1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     provided 'javax.annotation:jsr250-api:1.0'
 }

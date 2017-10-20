@@ -17,8 +17,7 @@ The app is based in MVP(Model View Presenter) with three layers:
 - Presenter
 - View
 
-App implements Dependency injection.
-App implements Reactive programming (Observable-Observer Pattern).
+App implements Dependency injection and Reactive programming (Observable-Observer Pattern).
 
 ## Details, Tools and Practices.
 
